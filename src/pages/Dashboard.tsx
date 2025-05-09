@@ -32,7 +32,14 @@ export default function Dashboard() {
         }
 
         if (data && data.length > 0) {
-          setAdherence(data[0]);
+          // Type casting to ensure the data matches our AdherenceSummary type
+          const typedData: AdherenceSummary = {
+            adherence_percentage: data[0].adherence_percentage,
+            missed_medications: data[0].missed_medications as any as { id: string; name: string; missed_count: number }[],
+            day_data: data[0].day_data as any as { day: string; adherence_percentage: number }[]
+          };
+          
+          setAdherence(typedData);
         }
       } catch (error) {
         console.error('Error in fetchAdherenceData:', error);

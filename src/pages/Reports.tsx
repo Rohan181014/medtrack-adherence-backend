@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
@@ -19,7 +18,7 @@ import {
 } from 'recharts';
 import { format, parseISO, subDays, startOfWeek, endOfWeek, addWeeks, subWeeks } from 'date-fns';
 import { Input } from '@/components/ui/input';
-import { FilePdfIcon, FileTextIcon } from 'lucide-react';
+import { FileIcon, FileTextIcon } from 'lucide-react';
 
 export default function Reports() {
   const { user } = useAuth();
@@ -50,7 +49,14 @@ export default function Reports() {
       }
       
       if (adherenceData && adherenceData.length > 0) {
-        setAdherence(adherenceData[0]);
+        // Type casting to ensure the data matches our AdherenceSummary type
+        const typedAdherenceData: AdherenceSummary = {
+          adherence_percentage: adherenceData[0].adherence_percentage,
+          missed_medications: adherenceData[0].missed_medications as any as { id: string; name: string; missed_count: number }[],
+          day_data: adherenceData[0].day_data as any as { day: string; adherence_percentage: number }[]
+        };
+        
+        setAdherence(typedAdherenceData);
       }
       
       // Fetch medications
@@ -179,7 +185,7 @@ export default function Reports() {
                 Export CSV
               </Button>
               <Button variant="outline" onClick={handleExportPDF}>
-                <FilePdfIcon className="mr-2 h-4 w-4" />
+                <FileIcon className="mr-2 h-4 w-4" />
                 Export PDF
               </Button>
             </div>

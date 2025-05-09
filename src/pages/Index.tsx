@@ -1,9 +1,8 @@
-
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from '@/contexts/AuthContext';
-import { Calendar, Check, ChartBar, Clock, FilePdf, Plus } from 'lucide-react';
+import { Calendar, Check, BarChart3, Clock, FileText, Plus } from 'lucide-react';
 
 const Index = () => {
   const { user } = useAuth();
@@ -54,7 +53,7 @@ const Index = () => {
           <Card className="bg-white shadow-md border-[#E2E8F0] hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle className="flex items-center text-xl text-[#3B82F6]">
-                <ChartBar className="w-5 h-5 mr-2" />
+                <BarChart3 className="w-5 h-5 mr-2" />
                 View Adherence Reports
               </CardTitle>
             </CardHeader>
@@ -108,7 +107,7 @@ const Index = () => {
           <Card className="bg-white shadow-md border-[#E2E8F0] hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle className="flex items-center text-xl text-[#3B82F6]">
-                <FilePdf className="w-5 h-5 mr-2" />
+                <FileText className="w-5 h-5 mr-2" />
                 Export Your Data
               </CardTitle>
               <CardDescription>Take control of your health information</CardDescription>

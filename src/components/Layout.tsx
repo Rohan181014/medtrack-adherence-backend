@@ -1,8 +1,7 @@
-
 import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { CalendarIcon, FilePdfIcon, HomeIcon, PlusIcon, AlertCircleIcon, LogOutIcon } from 'lucide-react';
+import { CalendarIcon, FileIcon, HomeIcon, PlusIcon, AlertCircleIcon, LogOutIcon } from 'lucide-react';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -96,7 +95,7 @@ export default function Layout({ children, requireAuth = true }: LayoutProps) {
                         ? 'bg-blue-100 text-blue-800' 
                         : 'text-gray-600 hover:text-blue-800 hover:bg-blue-50'
                     }`}>
-                    <FilePdfIcon className="w-5 h-5 inline-block mr-1" />
+                    <FileIcon className="w-5 h-5 inline-block mr-1" />
                     Reports
                   </Link>
                 </nav>
