@@ -9,13 +9,157 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      dose_logs: {
+        Row: {
+          created_at: string | null
+          id: string
+          medication_id: string
+          reward_earned: boolean
+          scheduled_time: string
+          taken_on_time: boolean
+          timestamp_taken: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          medication_id: string
+          reward_earned: boolean
+          scheduled_time: string
+          taken_on_time: boolean
+          timestamp_taken: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          medication_id?: string
+          reward_earned?: boolean
+          scheduled_time?: string
+          taken_on_time?: boolean
+          timestamp_taken?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dose_logs_medication_id_fkey"
+            columns: ["medication_id"]
+            isOneToOne: false
+            referencedRelation: "medications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      medications: {
+        Row: {
+          category_id: string | null
+          created_at: string | null
+          dose: string
+          end_date: string | null
+          frequency_per_day: number
+          id: string
+          name: string
+          start_date: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string | null
+          dose: string
+          end_date?: string | null
+          frequency_per_day: number
+          id?: string
+          name: string
+          start_date: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string | null
+          dose?: string
+          end_date?: string | null
+          frequency_per_day?: number
+          id?: string
+          name?: string
+          start_date?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "medications_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          display_name: string | null
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_name?: string | null
+          id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_adherence_summary: {
+        Args: { start_date?: string; end_date?: string }
+        Returns: {
+          adherence_percentage: number
+          missed_medications: Json
+          day_data: Json
+        }[]
+      }
+      log_dose: {
+        Args: {
+          medication_id: string
+          scheduled_time: string
+          actual_time?: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
