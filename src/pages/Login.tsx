@@ -6,12 +6,15 @@ import { toast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/Layout';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { InfoIcon, MailIcon } from "lucide-react";
 
 export default function Login() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
@@ -36,9 +39,10 @@ export default function Login() {
         if (!result.error) {
           toast({
             title: "Account created",
-            description: "Your account has been created. You can now log in.",
+            description: "Please check your email to verify your account before logging in.",
           });
           setIsSignUp(false);
+          setShowEmailConfirmation(true);
         } else {
           toast({
             title: "Error",
@@ -55,11 +59,21 @@ export default function Login() {
           });
           navigate('/dashboard');
         } else {
-          toast({
-            title: "Error",
-            description: result.error.message,
-            variant: "destructive"
-          });
+          // Check if the error is related to email confirmation
+          if (result.error.message.includes("Email not confirmed")) {
+            setShowEmailConfirmation(true);
+            toast({
+              title: "Email not confirmed",
+              description: "Please check your inbox and confirm your email before logging in.",
+              variant: "destructive"
+            });
+          } else {
+            toast({
+              title: "Error",
+              description: result.error.message,
+              variant: "destructive"
+            });
+          }
         }
       }
     } catch (error: any) {
@@ -83,6 +97,20 @@ export default function Login() {
               {isSignUp ? 'Create an account' : 'Sign in to your account'}
             </h2>
           </div>
+
+          {showEmailConfirmation && (
+            <Alert className="mb-6 bg-blue-50 border-blue-200">
+              <InfoIcon className="h-4 w-4 text-blue-600" />
+              <AlertTitle className="text-blue-600">Email confirmation required</AlertTitle>
+              <AlertDescription className="text-blue-700">
+                Please check your inbox for a confirmation email and click the link to verify your account.
+                <div className="mt-2 flex items-center">
+                  <MailIcon className="h-4 w-4 mr-2 text-blue-600" />
+                  <span className="font-medium">{email}</span>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
 
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
